@@ -14,7 +14,10 @@ import android.widget.Toast;
 import com.example.myapplication.entity.Libro;
 import com.example.myapplication.service.LibroService;
 import com.example.myapplication.util.Connection;
+import com.example.myapplication.util.ValidacionUtil;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,11 +48,20 @@ public class MainActivity extends AppCompatActivity {
         spnCategoria = findViewById(R.id.spnECategoria);
         spnTipo = findViewById(R.id.spnETipo);
         txtTitulo = findViewById(R.id.txtEditTitulo);
+        txtTitulo.setHint("Nombre del Libro");
         txtAnio = findViewById(R.id.txtEditAnio);
+        txtAnio.setHint("Ejemplo: 2022");
         txtSerie = findViewById(R.id.txtEditSerie);
+        txtSerie.setHint("Ejemplo: 84675132");
         txtFechaCreacion = findViewById(R.id.txtEditFechaCreacion);
+        txtFechaCreacion.setHint("Ejemplo: 2001-01-14");
         txtFechaRegistro = findViewById(R.id.txtEditFechaRegistro);
+        LocalTime hora = LocalTime.now();
+        LocalDate fecha = LocalDate.now();
+        txtFechaRegistro.setText(fecha+"T"+hora+"+00:00");
+        txtFechaRegistro.setEnabled(false);
         txtEstado = findViewById(R.id.txtEditEstado);
+        txtEstado.setHint("Ejemplo: 1");
         btnRegistrar = findViewById(R.id.btnBRegistrar);
 
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
@@ -65,17 +77,30 @@ public class MainActivity extends AppCompatActivity {
                 String est = txtEstado.getText().toString();
 
 
-                Libro obj = new Libro();
-                obj.setTitulo(tit);
-                obj.setAnio(ani);
-                obj.setCategoria(cat);
-                obj.setSerie(ser);
-                obj.setTipo(tip);
-                obj.setFechacreacion(fcr);
-                obj.setFechaRegistro(fre);
-                obj.setEstado(Integer.parseInt(est));
 
-                registar(obj);
+                if(!tit.matches(ValidacionUtil.NOMBRE)){
+                    mensajeAlert("Nombre debe de tener 3 a 30 carácteres.");
+                } else if(!ani.matches((ValidacionUtil.ANIO))){
+                    mensajeAlert("Error en el año.\nEjemplo: 2022");
+                } else if(!ser.matches(ValidacionUtil.SERIE)){
+                    mensajeAlert("Error en la serie, entre 3 a 8 digitos.\nEjemplo: 87564123");
+                } else if(!fcr.matches(ValidacionUtil.FECHAA)){
+                mensajeAlert("Error en el año insertado: AAAA-MM-DD.\nEjemplo: 2022-04-26");
+                } else if(!est.matches(ValidacionUtil.ESTADO)){
+                    mensajeAlert("Error en el estado insertado.\nEjemplo: 1");
+                } else {
+                    Libro obj = new Libro();
+                    obj.setTitulo(tit);
+                    obj.setAnio(ani);
+                    obj.setCategoria(cat);
+                    obj.setSerie(ser);
+                    obj.setTipo(tip);
+                    obj.setFechacreacion(fcr);
+                    obj.setFechaRegistro(fre);
+                    obj.setEstado(Integer.parseInt(est));
+
+                    registar(obj);
+                }
             }
         });
 
