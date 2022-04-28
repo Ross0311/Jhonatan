@@ -21,9 +21,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:text="Registro Libro"
+        android:text="Registro Alumno"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="20sp"
@@ -33,14 +31,12 @@
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Titulo" />
+        android:text="Nombre" />
 
     <EditText
-        android:id="@+id/txtEditTitulo"
+        android:id="@+id/txtEditNombre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="10dp"
         android:ems="10"
         android:inputType="textPersonName" />
 
@@ -49,74 +45,67 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:text="Año" />
+        android:text="Apellido" />
 
     <EditText
-        android:id="@+id/txtEditAnio"
+        android:id="@+id/txtEditApellido"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="10dp"
         android:ems="10"
         android:inputType="textPersonName" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Categoria" />
-
-    <Spinner
-        android:id="@+id/spnECategoria"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_margin="10dp"/>
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Serie" />
+        android:text="DNI" />
 
     <EditText
-        android:id="@+id/txtEditSerie"
+        android:id="@+id/txtEditdni"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="10dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:inputType="textPersonName" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tipo" />
+        android:text="Direccion" />
 
-    <Spinner
-        android:id="@+id/spnETipo"
+    <EditText
+        android:id="@+id/txtEditDireccion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="10dp" />
+        android:ems="10"
+        android:inputType="textPersonName" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fecha de Creación" />
+        android:text="Correo" />
 
     <EditText
-        android:id="@+id/txtEditFechaCreacion"
+        android:id="@+id/txtEditCorreo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="10dp"
         android:ems="10"
         android:inputType="textPersonName" />
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha de Nacimiento" />
 
+    <EditText
+        android:id="@+id/txtEditFechaNacimiento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:editable="false"
+        android:padding="10dp" />
     <TextView
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
@@ -132,9 +121,8 @@
         android:inputType="textPersonName"
         android:editable="false"
         android:padding="10dp" />
-
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Estado" />
@@ -144,9 +132,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:padding="10dp"
         android:ems="10"
-        android:inputType="textPersonName"/>
+        android:inputType="textPersonName"
+        android:editable="false"
+        android:padding="10dp" />
 
     <Button
         android:id="@+id/btnBRegistrar"
@@ -154,7 +143,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:layout_margin="10dp"
-        android:text="Registrar" />
+        android:text="Guardar Alumno" />
 
 
 

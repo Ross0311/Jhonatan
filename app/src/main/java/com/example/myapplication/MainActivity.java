@@ -11,8 +11,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.myapplication.entity.Libro;
-import com.example.myapplication.service.LibroService;
+import com.example.myapplication.entity.Alumno;
+import com.example.myapplication.service.AlumnoService;
 import com.example.myapplication.util.Connection;
 import com.example.myapplication.util.ValidacionUtil;
 
@@ -26,127 +26,77 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-
-    Spinner spnCategoria,spnTipo;
-
     ArrayAdapter<String> adapter;
-    ArrayList<String> libros = new ArrayList<String>();
-    List<Libro> lstLibros = new ArrayList<Libro>();
-
+    ArrayList<String> alumnos = new ArrayList<String>();
+    List<Alumno> lstAlumnos = new ArrayList<Alumno>();
     Button btnRegistrar;
-    EditText txtTitulo, txtAnio, txtSerie, txtFechaCreacion, txtFechaRegistro, txtEstado;
-
-    LibroService libroService;
-
+    EditText txtNombre, txtApellido, txtdni, txtDireccion, txtCorreo, txtFechaNacimiento, txtFechaRegistro, txtEstado;
+    AlumnoService alumnoService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        libroService = Connection.getConnecion().create(LibroService.class);
+        alumnoService = Connection.getConnecion().create(AlumnoService.class);
 
-        spnCategoria = findViewById(R.id.spnECategoria);
-        spnTipo = findViewById(R.id.spnETipo);
-        txtTitulo = findViewById(R.id.txtEditTitulo);
-        txtTitulo.setHint("Nombre del Libro");
-        txtAnio = findViewById(R.id.txtEditAnio);
-        txtAnio.setHint("Ejemplo: 2022");
-        txtSerie = findViewById(R.id.txtEditSerie);
-        txtSerie.setHint("Ejemplo: 84675132");
-        txtFechaCreacion = findViewById(R.id.txtEditFechaCreacion);
-        txtFechaCreacion.setHint("Ejemplo: 2001-01-14");
+        adapter = new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, alumnos);
+
+        txtNombre = findViewById(R.id.txtEditNombre);
+        txtApellido = findViewById(R.id.txtEditApellido);
+        txtdni = findViewById(R.id.txtEditdni);
+        txtDireccion = findViewById(R.id.txtEditDireccion);
+        txtCorreo = findViewById(R.id.txtEditCorreo);
+        txtFechaNacimiento = findViewById(R.id.txtEditFechaNacimiento);
         txtFechaRegistro = findViewById(R.id.txtEditFechaRegistro);
         LocalTime hora = LocalTime.now();
         LocalDate fecha = LocalDate.now();
         txtFechaRegistro.setText(fecha+"T"+hora+"+00:00");
         txtFechaRegistro.setEnabled(false);
         txtEstado = findViewById(R.id.txtEditEstado);
-        txtEstado.setHint("Ejemplo: 1");
         btnRegistrar = findViewById(R.id.btnBRegistrar);
-
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tit = txtTitulo.getText().toString();
-                String ani = txtAnio.getText().toString();
-                String cat = spnCategoria.getSelectedItem().toString();
-                String ser = txtSerie.getText().toString();
-                String tip = spnTipo.getSelectedItem().toString();
-                String fcr = txtFechaCreacion.getText().toString();
+                String nom = txtNombre.getText().toString();
+                String ape = txtApellido.getText().toString();
+                String dni = txtdni.getText().toString();
+                String dir = txtDireccion.getText().toString();
+                String cor = txtCorreo.getText().toString();
+                String fna = txtFechaNacimiento.getText().toString();
                 String fre = txtFechaRegistro.getText().toString();
                 String est = txtEstado.getText().toString();
 
-
-
-                if(!tit.matches(ValidacionUtil.NOMBRE)){
-                    mensajeAlert("Nombre debe de tener 3 a 30 carácteres.");
-                } else if(!ani.matches((ValidacionUtil.ANIO))){
-                    mensajeAlert("Error en el año.\nEjemplo: 2022");
-                } else if(!ser.matches(ValidacionUtil.SERIE)){
-                    mensajeAlert("Error en la serie, entre 3 a 8 digitos.\nEjemplo: 87564123");
-                } else if(!fcr.matches(ValidacionUtil.FECHAA)){
-                mensajeAlert("Error en el año insertado: AAAA-MM-DD.\nEjemplo: 2022-04-26");
-                } else if(!est.matches(ValidacionUtil.ESTADO)){
-                    mensajeAlert("Error en el estado insertado.\nEjemplo: 1");
-                } else {
-                    Libro obj = new Libro();
-                    obj.setTitulo(tit);
-                    obj.setAnio(ani);
-                    obj.setCategoria(cat);
-                    obj.setSerie(ser);
-                    obj.setTipo(tip);
-                    obj.setFechacreacion(fcr);
-                    obj.setFechaRegistro(fre);
-                    obj.setEstado(Integer.parseInt(est));
+                    Alumno obj = new Alumno();
+                    obj.setNombre(nom);
+                 obj.setApellidos(ape);
+                 obj.setDni(dni);
+                obj.setDireccion(dir);
+                obj.setCorreo(cor);
+                obj.setFechaNacimiento(fna);
+                obj.setFechaRegistro(fre);
+                obj.setEstado(1);
 
                     registar(obj);
-                }
+
             }
         });
 
-        adapter = new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, libros);
-        spnCategoria.setAdapter(adapter);
-        spnTipo.setAdapter(adapter);
-
-        btnRegistrar = findViewById(R.id.btnBRegistrar);
-
-        cargarDatos();
     }
-    public void cargarDatos(){
-        Call<List<Libro>> call = libroService.listaLibro();
-        call.enqueue(new Callback<List<Libro>>() {
-            @Override
-            public void onResponse(Call<List<Libro>> call, Response<List<Libro>> response) {
-                if(response.isSuccessful()){
-                    lstLibros = response.body();
-                    for (Libro obj : lstLibros){
-                        libros.add(obj.getCategoria());
-                    }
-                    adapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Libro>> call, Throwable t) {
-                    mensajeToast("Error al conectarse al servicio REST");
-            }
-        });
-    }
-    public void registar(Libro obj){
-    Call<Libro> call = libroService.insertarLibro(obj);
-    call.enqueue(new Callback<Libro>() {
+    public void registar(Alumno obj){
+    Call<Alumno> call = alumnoService.insertarAlumno(obj);
+    call.enqueue(new Callback<Alumno>() {
         @Override
-        public void onResponse(Call<Libro> call, Response<Libro> response) {
+        public void onResponse(Call<Alumno> call, Response<Alumno> response) {
             if(response.isSuccessful()){
-                Libro objRetorno = response.body();
-                mensajeAlert("Libro registrado correctamente");
+                Alumno objRetorno = response.body();
+                mensajeAlert("Alumno registrado correctamente");
             } else {
                 mensajeAlert("Error al registrar libro");
             }
         }
 
         @Override
-        public void onFailure(Call<Libro> call, Throwable t) {
+        public void onFailure(Call<Alumno> call, Throwable t) {
             mensajeToast(t.getMessage());
         }
     });
